@@ -1,53 +1,111 @@
 import assert from 'assert';
 
 import { VM, LDA } from '../index';
-
+const compile = require('../assembler');
+// given LDA #$01
+// A=$01 X=$00 Y=$00
+// SP=$ff PC=$0602
 describe('LDA', () => {
-  xit('sets the A register', () => {
-    assert.equal(VM.REGISTERS.A, '1');
+  it('sets the A register to the given value', () => {
+    const instruction = compile('LDA #1');
+    const vm = new VM();
+
+    vm.run(instruction);
+
+    assert.equal(vm.registers().A, 1);
   });
 
   describe('the status register', () => {
-    xit('does not change the carry flag', () =>  {
-      assert.equal(VM.REGISTERS.S.C, '0');
+    it('does not change the carry flag', () =>  {
+      const instruction = compile('LDA #1');
+      const vm = new VM();
+
+      vm.run(instruction);
+
+      assert.equal(vm.registers().S.C, 0);
     });
 
-    xit('sets the zero flag if A = 0', () =>  {
-      assert.equal(VM.REGISTERS.S.Z, '1');
+    it('sets the zero flag if A = 0', () =>  {
+      const instruction = compile('LDA #0');
+      const vm = new VM();
+
+      vm.run(instruction);
+
+      assert.equal(vm.registers().S.Z, 1);
     });
 
-    xit('does not set the zero flag if A != 0', () => {
-      assert.equal(VM.REGISTERS.S.Z, '0');
+    it('does not set the zero flag if A != 0', () => {
+      const instruction = compile('LDA #1');
+      const vm = new VM();
+
+      vm.run(instruction);
+
+      assert.equal(vm.registers().S.Z, 0);
     });
 
-    xit('does not change interrupt disable', () =>  {
-      assert.equal(VM.REGISTERS.S.I, '0');
+    it('does not change interrupt disable', () =>  {
+      const instruction = compile('LDA #1');
+      const vm = new VM();
+
+      vm.run(instruction);
+
+      assert.equal(vm.registers().S.I, 0);
     });
 
-    xit('does not change decimal mode', () =>  {
-      assert.equal(VM.REGISTERS.S.D, '0');
+    it('does not change decimal mode', () =>  {
+      const instruction = compile('LDA #1');
+      const vm = new VM();
+
+      vm.run(instruction);
+
+      assert.equal(vm.registers().S.D, 0);
     });
 
-    xit('does not change break command', () =>  {
-      assert.equal(VM.REGISTERS.S.B, '0');
+    it('does not change break command', () =>  {
+      const instruction = compile('LDA #1');
+      const vm = new VM();
+
+      vm.run(instruction);
+
+      assert.equal(vm.registers().S.B, 0);
     });
 
-    xit('does not change overflow flag', () =>  {
-      assert.equal(VM.REGISTERS.S.V, '0');
+    it('does not change overflow flag', () =>  {
+      const instruction = compile('LDA #1');
+      const vm = new VM();
+
+      vm.run(instruction);
+
+      assert.equal(vm.registers().S.V, 0);
     });
 
-    // is this because negative numbers are marked in binary with a flag?
+    // TODO: compiler doesn't like this
     xit('sets the negative flag if bit 7 of A is set', () =>  {
-      assert.equal(VM.REGISTERS.S.N, '1');
+      const instruction = compile('LDA #EA');
+      const vm = new VM();
+
+      vm.run(instruction);
+
+      assert.equal(vm.registers().S.N, 1);
     });
 
-    xit('does not set the negative flag if bit 7 of A is not set', () =>  {
-      assert.equal(VM.REGISTERS.S.N, '0');
+    it('does not set the negative flag if bit 7 of A is not set', () =>  {
+      const instruction = compile('LDA #1');
+      const vm = new VM();
+
+      vm.run(instruction);
+
+      assert.equal(vm.registers().S.N, 0);
     });
   });
 
-  xit('increments the program counter', () => {
-    assert.equal(VM.REGISTERS.PC, '2');
+  it('increments the program counter', () => {
+    const instruction = compile('LDA #1');
+    const vm = new VM();
+
+    vm.run(instruction);
+
+    assert.equal(vm.registers().PC, 1538);
   });
 
   // TODO describe this better
