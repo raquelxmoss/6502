@@ -2,9 +2,7 @@ import assert from 'assert';
 
 import { VM, LDA } from '../index';
 const compile = require('../assembler');
-// given LDA #$01
-// A=$01 X=$00 Y=$00
-// SP=$ff PC=$0602
+
 describe('LDA', () => {
   it('sets the A register to the given value', () => {
     const instruction = compile('LDA #1');
@@ -109,6 +107,14 @@ describe('LDA', () => {
   });
 
   // TODO describe this better
-  xit('sets memory', () => {
+  // also I am really confused as to how to store my
+  // memory. A string doesn't seem right?
+  it('sets memory', () => {
+    const instruction = compile('LDA #1');
+    const vm = new VM();
+
+    vm.run(instruction);
+
+    assert.equal(vm.memory(), '169 1 ');
   });
 })

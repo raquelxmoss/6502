@@ -14,6 +14,10 @@ export class VM {
     return this.REGISTERS;
   }
 
+  memory () {
+    return this.MEMORY;
+  }
+
   mapCommand (value) {
     return {
       169: 'LDA'
@@ -26,7 +30,12 @@ export class VM {
 
     if (!this[command]) { throw new Error('command not implemented :-('); }
 
+    this.setMemory(opCode);
     this[command](value);
+  }
+
+  setMemory(value) {
+    this.MEMORY += (value + ' ');
   }
 
   LDA (value) {
@@ -36,6 +45,7 @@ export class VM {
 
     this.REGISTERS.S = {...this.REGISTERS.S, Z };
     this.REGISTERS.PC = this.REGISTERS.PC + 2;
+    this.setMemory(value);
   }
 }
 
