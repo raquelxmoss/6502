@@ -57,6 +57,7 @@ export class VM {
   // stores the contents of the A register
   // into memory
   STA (location) {
+    this.setMemory(this.REGISTERS.A, location);
   }
 }
 
