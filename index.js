@@ -5,9 +5,9 @@ export class VM {
       X: '',
       Y: '',
       S: { C: 0, Z: 0, I: 0, D: 0, B: 0, V: 0, N: 0},
-      PC: 1536,
+      PC: 0,
     }
-    this.MEMORY = '';
+    this.MEMORY = new Array(65535);
   }
 
   registers () {
@@ -20,7 +20,8 @@ export class VM {
 
   mapCommand (value) {
     return {
-      169: 'LDA'
+      169: 'LDA',
+      133: 'STA'
     }[value]
   }
 
@@ -34,8 +35,13 @@ export class VM {
     this[command](value);
   }
 
-  setMemory(value) {
-    this.MEMORY += (value + ' ');
+  setMemory (value, location) {
+    location = location || this.MEMORY.findIndex(loc => loc == undefined);
+    this.MEMORY[location] = value;
+  }
+
+  incrementPC (amount = 1) {
+    this.REGISTERS.PC = this.REGISTERS.PC + amount;
   }
 
   LDA (value) {
@@ -43,9 +49,14 @@ export class VM {
 
     const Z = isZeroValue(value);
 
-    this.REGISTERS.S = {...this.REGISTERS.S, Z };
-    this.REGISTERS.PC = this.REGISTERS.PC + 2;
     this.setMemory(value);
+    this.incrementPC(2);
+    this.REGISTERS.S = {...this.REGISTERS.S, Z };
+  }
+
+  // stores the contents of the A register
+  // into memory
+  STA (location) {
   }
 }
 

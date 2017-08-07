@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-import { VM, LDA } from '../index';
+import { VM } from '../index';
 const compile = require('../assembler');
 
 describe('LDA', () => {
@@ -103,18 +103,16 @@ describe('LDA', () => {
 
     vm.run(instruction);
 
-    assert.equal(vm.registers().PC, 1538);
+    assert.equal(vm.registers().PC, 2);
   });
 
-  // TODO describe this better
-  // also I am really confused as to how to store my
-  // memory. A string doesn't seem right?
   it('sets memory', () => {
     const instruction = compile('LDA #1');
     const vm = new VM();
 
     vm.run(instruction);
 
-    assert.equal(vm.memory(), '169 1 ');
+    assert.equal(vm.memory()[0], 169);
+    assert.equal(vm.memory()[1], 1);
   });
 })
